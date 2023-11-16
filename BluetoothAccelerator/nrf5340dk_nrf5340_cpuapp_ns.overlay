@@ -1,25 +1,27 @@
-/*
- * Copyright (c) 2021 Nordic Semiconductor ASA
- *
- * SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
- */
+// To get started, press Ctrl+Space to bring up the completion menu and view the available nodes.
 
-/ {
-	chosen {
-		zephyr,console = &cdc_acm_uart0;
-	};
-};
+// You can also use the buttons in the sidebar to perform actions on nodes.
+// Actions currently available include:
+
+// * Enabling / disabling the node
+// * Adding the bus to a bus
+// * Removing the node
+// * Connecting ADC channels
+
+// For more help, browse the DeviceTree documentation at https://docs.zephyrproject.org/latest/guides/dts/index.html
+// You can also visit the nRF DeviceTree extension documentation at https://nrfconnect.github.io/vscode-nrf-connect/devicetree/nrfdevicetree.html
+
+
+
+
 /{
 	zephyr,user {
 		io-channels = <&adc 0>, <&adc 1>, <&adc 2>;
 	};
 };
 
-&zephyr_udc0 {
-	cdc_acm_uart0: cdc_acm_uart0 {
-		compatible = "zephyr,cdc-acm-uart";
-	};
-};
+
+
 &adc {
 	status = "okay";
 	#address-cells = <1>;
@@ -56,3 +58,4 @@
 
 
 };
+

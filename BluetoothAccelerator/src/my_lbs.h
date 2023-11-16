@@ -7,12 +7,6 @@
 #ifndef BT_LBS_H_
 #define BT_LBS_H_
 
-/**@file
- * @defgroup bt_lbs LED Button Service API
- * @{
- * @brief API for the LED Button Service (LBS).
- */
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -54,55 +48,12 @@ struct my_lbs_cb {
 	button_cb_t button_cb;
 };
 
-/** @brief Initialize the LBS Service.
- *
- * This function registers application callback functions with the My LBS
- * Service
- *
- * @param[in] callbacks Struct containing pointers to callback functions
- *			used by the service. This pointer can be NULL
- *			if no callback functions are defined.
- *
- *
- * @retval 0 If the operation was successful.
- *           Otherwise, a (negative) error code is returned.
- */
-int my_lbs_init(struct my_lbs_cb *callbacks);
+int my_lbs_init(void);
 
-/** @brief Send the button state as indication.
- *
- * This function sends a binary state, typically the state of a
- * button, to all connected peers.
- *
- * @param[in] button_state The state of the button.
- *
- * @retval 0 If the operation was successful.
- *           Otherwise, a (negative) error code is returned.
- */
 int my_lbs_send_button_state_indicate(bool button_state);
 
-/** @brief Send the button state as notification.
- *
- * This function sends a binary state, typically the state of a
- * button, to all connected peers.
- *
- * @param[in] button_state The state of the button.
- *
- * @retval 0 If the operation was successful.
- *           Otherwise, a (negative) error code is returned.
- */
 int my_lbs_send_button_state_notify(bool button_state);
 
-/** @brief Send the sensor value as notification.
- *
- * This function sends an uint32_t  value, typically the value
- * of a simulated sensor to all connected peers.
- *
- * @param[in] sensor_value The value of the simulated sensor.
- *
- * @retval 0 If the operation was successful.
- *           Otherwise, a (negative) error code is returned.
- */
 int my_lbs_send_sensor_notify(uint32_t sensor_value);
 
 #ifdef __cplusplus
