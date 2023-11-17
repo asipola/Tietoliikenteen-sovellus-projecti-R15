@@ -26,6 +26,7 @@
 
 LOG_MODULE_DECLARE(Lesson4_Exercise2);
 
+static uint32_t custom_value[3];
 static bool notify_enabled;
 static bool notify_mysensor_enabled;
 static bool indicate_enabled;
@@ -113,7 +114,7 @@ BT_GATT_SERVICE_DEFINE(
 			       write_led, NULL),
 	/* STEP 12 - Create and add the MYSENSOR characteristic and its CCCD  */
 	BT_GATT_CHARACTERISTIC(BT_UUID_LBS_MYSENSOR, BT_GATT_CHRC_NOTIFY, BT_GATT_PERM_NONE, NULL,
-			       NULL, NULL),
+			       NULL, &custom_value),
 
 	BT_GATT_CCC(mylbsbc_ccc_mysensor_cfg_changed, BT_GATT_PERM_READ | BT_GATT_PERM_WRITE),
 
@@ -142,7 +143,7 @@ int my_lbs_send_button_state_indicate(bool button_state)
 	ind_params.len = sizeof(button_state);
 	return bt_gatt_indicate(NULL, &ind_params);
 }
-static uint32_t custom_value[3];
+
 /* STEP 14 - Define the function to send notifications for the MYSENSOR characteristic */
 int my_lbs_send_sensor_notify(uint32_t x, uint32_t y,uint32_t z)
 {
