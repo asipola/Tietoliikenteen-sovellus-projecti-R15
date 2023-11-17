@@ -48,7 +48,7 @@ struct my_lbs_cb {
 	button_cb_t button_cb;
 };
 
-int my_lbs_init(void);
+int my_lbs_init(struct my_lbs_cb *callbacks);
 
 int my_lbs_send_button_state_indicate(bool button_state);
 

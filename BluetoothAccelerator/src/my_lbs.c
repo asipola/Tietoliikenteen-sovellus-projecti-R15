@@ -21,6 +21,7 @@
 #include <zephyr/bluetooth/conn.h>
 #include <zephyr/bluetooth/uuid.h>
 #include <zephyr/bluetooth/gatt.h>
+
 #include "my_lbs.h"
 
 LOG_MODULE_DECLARE(Lesson4_Exercise2);
@@ -117,8 +118,32 @@ BT_GATT_SERVICE_DEFINE(
 	BT_GATT_CCC(mylbsbc_ccc_mysensor_cfg_changed, BT_GATT_PERM_READ | BT_GATT_PERM_WRITE),
 
 );
+/* A function to register application callbacks for the LED and Button characteristics  */
+int my_lbs_init(struct my_lbs_cb *callbacks)
+{
+	if (callbacks) {
+		lbs_cb.led_cb = callbacks->led_cb;
+		lbs_cb.button_cb = callbacks->button_cb;
+	}
 
+	return 0;
+}
 
+/* STEP 5 - Define the function to send indications */
+int my_lbs_send_button_state_indicate(bool button_state)
+{
+	if (!indicate_enabled) {
+		return -EACCES;
+	}
+	ind_params.attr = &my_lbs_svc.attrs[2];
+	ind_params.func = indicate_cb; // A remote device has ACKed at its host layer (ATT ACK)
+	ind_params.destroy = NULL;
+	ind_params.data = &button_state;
+	ind_params.len = sizeof(button_state);
+	return bt_gatt_indicate(NULL, &ind_params);
+}
+
+/* STEP 14 - Define the function to send notifications for the MYSENSOR characteristic */
 int my_lbs_send_sensor_notify(uint32_t sensor_value)
 {
 	if (!notify_mysensor_enabled) {
@@ -127,4 +152,3 @@ int my_lbs_send_sensor_notify(uint32_t sensor_value)
 
 	return bt_gatt_notify(NULL, &my_lbs_svc.attrs[7], &sensor_value, sizeof(sensor_value));
 }
-
