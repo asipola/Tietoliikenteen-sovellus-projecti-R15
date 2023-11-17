@@ -112,9 +112,8 @@ void send_data_thread(void)
     {
         struct Measurement m = readADCValue();
         uint32_t my = m.x + m.y + m.z;
-        my_lbs_send_sensor_notify(m.x);
-        my_lbs_send_sensor_notify(m.y);
-        my_lbs_send_sensor_notify(m.z);
+        my_lbs_send_sensor_notify(m.x, m.y,m.z);
+        
         printk("x = %d,  y = %d,  z = %d\n", m.x, m.y, m.z);
         k_sleep(K_SECONDS(3)); 
     }

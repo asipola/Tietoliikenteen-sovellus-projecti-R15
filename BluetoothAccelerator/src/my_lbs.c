@@ -142,13 +142,17 @@ int my_lbs_send_button_state_indicate(bool button_state)
 	ind_params.len = sizeof(button_state);
 	return bt_gatt_indicate(NULL, &ind_params);
 }
-
+static uint32_t custom_value[3];
 /* STEP 14 - Define the function to send notifications for the MYSENSOR characteristic */
-int my_lbs_send_sensor_notify(uint32_t sensor_value)
+int my_lbs_send_sensor_notify(uint32_t x, uint32_t y,uint32_t z)
 {
 	if (!notify_mysensor_enabled) {
 		return -EACCES;
 	}
+	custom_value[0]=x;
+	custom_value[1]=z;
+	custom_value[2]=y;
+	//int len = snprintf(custom_value, sizeof(custom_value), "%d,%d,%d", x, y, z);
 
-	return bt_gatt_notify(NULL, &my_lbs_svc.attrs[7], &sensor_value, sizeof(sensor_value));
+	return bt_gatt_notify(NULL, &my_lbs_svc.attrs[7], custom_value, sizeof(custom_value));
 }
