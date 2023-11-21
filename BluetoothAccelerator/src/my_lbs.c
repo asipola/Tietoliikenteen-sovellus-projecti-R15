@@ -21,12 +21,12 @@
 #include <zephyr/bluetooth/conn.h>
 #include <zephyr/bluetooth/uuid.h>
 #include <zephyr/bluetooth/gatt.h>
-
 #include "my_lbs.h"
+
 
 LOG_MODULE_DECLARE(Lesson4_Exercise2);
 
-static uint32_t custom_value[3];
+static uint32_t custom_value[4];
 static bool notify_enabled;
 static bool notify_mysensor_enabled;
 static bool indicate_enabled;
@@ -145,7 +145,7 @@ int my_lbs_send_button_state_indicate(bool button_state)
 }
 
 /* STEP 14 - Define the function to send notifications for the MYSENSOR characteristic */
-int my_lbs_send_sensor_notify(uint32_t x, uint32_t y,uint32_t z)
+int my_lbs_send_sensor_notify(uint32_t x, uint32_t y,uint32_t z,uint32_t a)
 {
 	if (!notify_mysensor_enabled) {
 		return -EACCES;
@@ -153,6 +153,7 @@ int my_lbs_send_sensor_notify(uint32_t x, uint32_t y,uint32_t z)
 	custom_value[0]=x;
 	custom_value[1]=z;
 	custom_value[2]=y;
+	custom_value[3]=a;
 	//int len = snprintf(custom_value, sizeof(custom_value), "%d,%d,%d", x, y, z);
 
 	return bt_gatt_notify(NULL, &my_lbs_svc.attrs[7], custom_value, sizeof(custom_value));

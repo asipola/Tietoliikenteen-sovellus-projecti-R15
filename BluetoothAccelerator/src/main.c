@@ -49,10 +49,10 @@ static const struct bt_data sd[] = {
 static void button_changed(uint32_t button_state, uint32_t has_changed)
 {
 	if (has_changed & USER_BUTTON) {
-		uint32_t user_button_state = button_state & USER_BUTTON;
-		/* STEP 6 - Send indication on a button press */
+		/*uint32_t user_button_state = button_state & USER_BUTTON;
 		my_lbs_send_button_state_indicate(user_button_state);
-		app_button_state = user_button_state ? true : false;
+		app_button_state = user_button_state ? true : false;*/	
+		send_data_button();
 	}
 }
 
@@ -103,22 +103,26 @@ static void app_led_cb(bool led_state)
 
 static bool app_button_cb(void)
 {
+
 	return app_button_state;
 }
 
 void send_data_thread(void)
 {
-    while (1)
-    {
+}
+void send_data_button(void)
+{
+	uint32_t i= 1;
+	for (int i = 0; i < 50; ++i) {
         struct Measurement m = readADCValue();
         uint32_t my = m.x + m.y + m.z;
-        my_lbs_send_sensor_notify(m.x, m.y,m.z);
+        my_lbs_send_sensor_notify(m.x, m.y,m.z,i);
         
-        printk("x = %d,  y = %d,  z = %d\n", m.x, m.y, m.z);
-        k_sleep(K_SECONDS(3)); 
-    }
+        printk("x = %d,  y = %d,  z = %d, suunta= %d\n", m.x, m.y, m.z,i);
+		k_sleep(K_SECONDS(0.5));
+	}
+	i++;
 }
-
 static struct my_lbs_cb app_callbacks = {
 	.led_cb = app_led_cb,
 	.button_cb = app_button_cb,
@@ -165,9 +169,6 @@ void main(void)
     }
 
     LOG_INF("Advertising successfully started\n");
-	struct Measurement m = readADCValue();
-	printk("x = %d,  y = %d,  z = %d\n", m.x, m.y, m.z);
-
 }
 K_THREAD_DEFINE(send_data_thread_id, STACKSIZE, send_data_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 

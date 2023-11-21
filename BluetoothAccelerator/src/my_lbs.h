@@ -54,7 +54,7 @@ int my_lbs_send_button_state_indicate(bool button_state);
 
 int my_lbs_send_button_state_notify(bool button_state);
 
-int my_lbs_send_sensor_notify(uint32_t x, uint32_t y,uint32_t z);
+int my_lbs_send_sensor_notify(uint32_t x, uint32_t y,uint32_t z, uint32_t a);
 
 #ifdef __cplusplus
 }
