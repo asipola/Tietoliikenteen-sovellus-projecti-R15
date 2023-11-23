@@ -32,7 +32,7 @@ static struct bt_le_adv_param *adv_param = BT_LE_ADV_PARAM(
     NULL);
 
 LOG_MODULE_REGISTER(MAIN, LOG_LEVEL_INF);
-
+	uint32_t i= 4;
 #define STACKSIZE 1024
 #define PRIORITY 7
 
@@ -45,15 +45,19 @@ static const struct bt_data ad[] = {
 static const struct bt_data sd[] = {
     BT_DATA_BYTES(BT_DATA_UUID128_ALL, BT_UUID_LBS_VAL),
 };
-
+bool pressed;
 static void button_changed(uint32_t button_state, uint32_t has_changed)
 {
 	if (has_changed & USER_BUTTON) {
+		if (pressed){
+			pressed=false;
 		/*uint32_t user_button_state = button_state & USER_BUTTON;
 		my_lbs_send_button_state_indicate(user_button_state);
 		app_button_state = user_button_state ? true : false;*/	
 		send_data_button();
-	}
+	}else {
+		pressed = true;
+	}}
 }
 
 static int init_button(void)
@@ -109,17 +113,16 @@ static bool app_button_cb(void)
 
 void send_data_thread(void)
 {
-}
-void send_data_button(void)
-{
-	uint32_t i= 1;
-	for (int i = 0; i < 50; ++i) {
-        struct Measurement m = readADCValue();
-        uint32_t my = m.x + m.y + m.z;
+	struct Measurement m = readADCValue();
         my_lbs_send_sensor_notify(m.x, m.y,m.z,i);
         
         printk("x = %d,  y = %d,  z = %d, suunta= %d\n", m.x, m.y, m.z,i);
-		k_sleep(K_SECONDS(0.5));
+}
+void send_data_button(void)
+{
+	for (int a = 0; a < 50; ++a) {
+        send_data_thread();
+		k_sleep(K_SECONDS(0.1));
 	}
 	i++;
 }

@@ -1,0 +1,6 @@
+	1
+5	2	6
+	3
+	4
+
+ensimmäinen arvo on anturin pinnit kohti reset nappia ja anturin ollessa "pysty" asennossa reijät ylöspäin.	
