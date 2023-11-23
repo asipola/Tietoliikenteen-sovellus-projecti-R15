@@ -35,8 +35,7 @@ LOG_MODULE_REGISTER(MAIN, LOG_LEVEL_INF);
 
 #define STACKSIZE 1024
 #define PRIORITY 7
-uint32_t i= 0;
-bool pressed;
+
 static const struct bt_data ad[] = {
     BT_DATA_BYTES(BT_DATA_FLAGS, (BT_LE_AD_GENERAL | BT_LE_AD_NO_BREDR)),
     BT_DATA(BT_DATA_NAME_COMPLETE, CONFIG_BT_DEVICE_NAME, sizeof(CONFIG_BT_DEVICE_NAME) - 1),
@@ -50,22 +49,17 @@ static const struct bt_data sd[] = {
 static void button_changed(uint32_t button_state, uint32_t has_changed)
 {
 	if (has_changed & USER_BUTTON) {
-		if (pressed){
-			pressed=false;
 		/*uint32_t user_button_state = button_state & USER_BUTTON;
 		my_lbs_send_button_state_indicate(user_button_state);
 		app_button_state = user_button_state ? true : false;*/	
 		send_data_button();
-	}else {
-		pressed = true;
-	}
 	}
 }
 
 static int init_button(void)
 {
 	int err;
-	pressed = true;
+
 	err = dk_buttons_init(button_changed);
 	if (err) {
 		printk("Cannot init buttons (err: %d)\n", err);
@@ -100,11 +94,11 @@ struct bt_conn_cb connection_callbacks = {
 
 static void simulate_data(struct Measurement *measurement)
 {
-   // *measurement = readADCValue();
+    *measurement = readADCValue();
 }
 static void app_led_cb(bool led_state)
 {
-	//dk_set_led(USER_LED, led_state);
+	dk_set_led(USER_LED, led_state);
 }
 
 static bool app_button_cb(void)
@@ -115,20 +109,20 @@ static bool app_button_cb(void)
 
 void send_data_thread(void)
 {
-	struct Measurement m = readADCValue();
-	printk("x = %d,  y = %d,  z = %d, suunta= %d\n", m.x, m.y, m.z,i);
-    my_lbs_send_sensor_notify(m.x, m.y,m.z,i);
-
-
 }
 void send_data_button(void)
 {
-	for (int a = 0; a < 10; ++a) {
-	send_data_thread();
-	k_sleep(K_SECONDS(0.5));
+	uint32_t i= 1;
+	for (int i = 0; i < 50; ++i) {
+        struct Measurement m = readADCValue();
+        uint32_t my = m.x + m.y + m.z;
+        my_lbs_send_sensor_notify(m.x, m.y,m.z,i);
+        
+        printk("x = %d,  y = %d,  z = %d, suunta= %d\n", m.x, m.y, m.z,i);
+		k_sleep(K_SECONDS(0.5));
 	}
 	i++;
-}	
+}
 static struct my_lbs_cb app_callbacks = {
 	.led_cb = app_led_cb,
 	.button_cb = app_button_cb,

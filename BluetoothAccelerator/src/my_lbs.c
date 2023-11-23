@@ -151,8 +151,8 @@ int my_lbs_send_sensor_notify(uint32_t x, uint32_t y,uint32_t z,uint32_t a)
 		return -EACCES;
 	}
 	custom_value[0]=x;
-	custom_value[1]=y;
-	custom_value[2]=z;
+	custom_value[1]=z;
+	custom_value[2]=y;
 	custom_value[3]=a;
 	//int len = snprintf(custom_value, sizeof(custom_value), "%d,%d,%d", x, y, z);
 
