@@ -5,4 +5,6 @@ project(ADC)
 target_sources(app PRIVATE src/main.c)
 target_sources(app PRIVATE src/my_lbs.c)
 target_sources(app PRIVATE src/adc.c)
+
+
 zephyr_library_include_directories(.)

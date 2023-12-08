@@ -19,9 +19,12 @@
 #include <zephyr/bluetooth/gap.h>
 #include <zephyr/bluetooth/uuid.h>
 #include <zephyr/bluetooth/conn.h>
+#include <math.h>
 #include "my_lbs.h"
+#include "centerPoints.h"
+#include "centerPoints.h"
 
-#define USER_BUTTON DK_BTN1_MSK
+#define USER_BUTTON DK_BTN2_MSK
 #define CON_STATUS_LED DK_LED2
 #define USER_LED DK_LED3
 static bool app_button_state;
@@ -58,6 +61,34 @@ static void button_changed(uint32_t button_state, uint32_t has_changed)
 	}else {
 		pressed = true;
 	}}
+}
+
+int indexOF(int arr[]){
+	int koko = sizeof(arr) + 2;
+	int min = arr[0];
+	for (int i = 0; i < koko; i++){
+		if (min>arr[i]){
+			min = arr[i];
+		}
+	}
+	for (int i = 0; i < koko; i++){
+		if (arr[i] == min){
+			return i;
+		}
+	}
+}
+
+int suunta(int x, int y, int z){
+	int lahin[6];
+	lahin[0] = sqrt(pow((x-centerpoint[0][0]),2)+ pow((y-centerpoint[0][1]),2)+pow((z-centerpoint[0][2]),2));
+	lahin[1] = sqrt(pow((x-centerpoint[1][0]),2)+ pow((y-centerpoint[1][1]),2)+pow((z-centerpoint[1][2]),2));
+	lahin[2] = sqrt(pow((x-centerpoint[2][0]),2)+ pow((y-centerpoint[2][1]),2)+pow((z-centerpoint[2][2]),2));
+	lahin[3] = sqrt(pow((x-centerpoint[3][0]),2)+ pow((y-centerpoint[3][1]),2)+pow((z-centerpoint[3][2]),2));
+	lahin[4] = sqrt(pow((x-centerpoint[4][0]),2)+ pow((y-centerpoint[4][1]),2)+pow((z-centerpoint[4][2]),2));
+	lahin[5] = sqrt(pow((x-centerpoint[5][0]),2)+ pow((y-centerpoint[5][1]),2)+pow((z-centerpoint[5][2]),2));
+	int xyz = (x-centerpoint[0][0]);
+	int mininumValue = indexOF(lahin);
+	return mininumValue;
 }
 
 static int init_button(void)
@@ -113,18 +144,28 @@ static bool app_button_cb(void)
 
 void send_data_thread(void)
 {
+	while(1){
 	struct Measurement m = readADCValue();
-        my_lbs_send_sensor_notify(m.x, m.y,m.z,i);
-        
-        printk("x = %d,  y = %d,  z = %d, suunta= %d\n", m.x, m.y, m.z,i);
+        //my_lbs_send_sensor_notify(m.x, m.y,m.z,i);
+        buttonprint();
+		k_sleep(K_SECONDS(2));
+        //printk("x = %d,  y = %d,  z = %d, suunta= %d\n", m.x, m.y, m.z,i);
+	}
 }
+void buttonprint(void){
+	struct Measurement m = readADCValue();
+    
+    printk("x = %d,  y = %d,  z = %d, suunta= %d\n", m.x, m.y, m.z, suunta(m.x, m.y, m.z));
+}
+
 void send_data_button(void)
 {
-	for (int a = 0; a < 50; ++a) {
+	/*for (int a = 0; a < 50; ++a) {
         send_data_thread();
 		k_sleep(K_SECONDS(0.1));
 	}
-	i++;
+	i++;*/
+	buttonprint();
 }
 static struct my_lbs_cb app_callbacks = {
 	.led_cb = app_led_cb,
