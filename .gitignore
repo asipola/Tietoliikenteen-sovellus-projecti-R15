@@ -1,3 +1,5 @@
 /BluetoothAccelerator/build
 /BluetoothAccelerator/CMakeList.txt
 /BluetoothAccelerator/.vscode
+*Build/
+*.vscode
