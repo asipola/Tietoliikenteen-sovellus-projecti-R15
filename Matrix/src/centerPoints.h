@@ -1,0 +1,14 @@
+#ifndef CENTERPOINTS
+#define CENTERPOINTS
+
+int centerpoint[6][3]={
+{1606, 1299, 1702},
+{1610, 1604, 2019},
+{1620, 1980, 1696},
+{1613, 1668, 1362},
+{1961, 1615, 1677},
+{1282, 1649, 1692}
+};
+
+
+#endif // CENTERPOINTS
