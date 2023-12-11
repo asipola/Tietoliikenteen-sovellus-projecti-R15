@@ -5,4 +5,4 @@ T채m채 on koulu projekti, jossa ker채t채채n kiihtyvyysanturin dataa ja l채hetet�
 <img src="images/arkkitehtuuri kaavio.PNG">
 
 Confusion matriisi jolla n채emme algorytmin tarkkuuden, testiss채mme se tuotti sadan prosentin osuvuuden.
-<img src="images/matriisi.PNG">
+<img src="images/matriisi.png">
