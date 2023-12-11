@@ -5,4 +5,5 @@ Tämä on koulu projekti, jossa kerätään kiihtyvyysanturin dataa ja lähetet�
 <img src="images/arkkitehtuuri kaavio.PNG">
 
 Confusion matriisi jolla näemme algorytmin tarkkuuden, testissämme se tuotti sadan prosentin osuvuuden.
+Kolumit ovat algorytmin laskema suunta, joka otettu kiihtyvyys anturista ja rivit ovat käyttäjän kertomat suunnat.
 <img src="images/matriisi.png">
