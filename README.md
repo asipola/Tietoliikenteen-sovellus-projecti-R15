@@ -7,3 +7,4 @@ Tämä on koulu projekti, jossa kerätään kiihtyvyysanturin dataa ja lähetet�
 Confusion matriisi jolla näemme algorytmin tarkkuuden, testissämme se tuotti sadan prosentin osuvuuden.
 <br> Kolumit ovat algorytmin laskema suunta, joka otettu kiihtyvyys anturista ja rivit ovat käyttäjän kertomat suunnat.<br>
 <img src="images/matriisi.png">
+![Posteri R15](https://github.com/user-attachments/assets/d2f0c746-a0f5-4937-aa93-10c23ebcc0d6)
